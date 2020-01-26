@@ -6,17 +6,32 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pubspecproject.`interface`.onClickListener
+import com.example.pubspecproject.adapter.CustomAdapter
+import com.example.pubspecproject.adapter.SortByListAdapter
 import com.example.pubspecproject.api.Vga_Req.getVga.vgaReq_Api
 import com.example.pubspecproject.model.VgaModel
-import com.example.pubspecproject.ui.detail_vga.DetailVgaFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 @SuppressLint("ParcelCreator")
-class DetailVgaActivity() : AppCompatActivity() {
+class DetailVgaActivity : AppCompatActivity(), onClickListener {
+    override fun onClickIO(item: VgaModel, indexPosition: Int, status: String) {
+
+    }
+
+    override fun onClickSortBy(result: String?, indexPosition: Int, status: String, tag: String) {
+        when(status){
+            "ClickSort" ->{
+                Log.d(TAG, "Element $indexPosition clicked.")
+                initDataSet(listResult, result)
+            }
+        }
+    }
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerSort: RecyclerView
     var listResult : ArrayList<VgaModel>? = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,16 +39,19 @@ class DetailVgaActivity() : AppCompatActivity() {
         setContentView(R.layout.activity_detail_vga)
 
         recyclerView = findViewById(R.id.recyclerView)
+        recyclerSort = findViewById(R.id.recyclerSort)
 
-        if (savedInstanceState == null || !savedInstanceState.containsKey("key")){
-            callGetApiVga()
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, DetailVgaFragment.newInstance())
-                .commitNow()
-        }else{
-            listResult = savedInstanceState.getParcelableArrayList("key")
-            initDataSet(listResult)
-        }
+        initSortDataSet()
+        callGetApiVga()
+//        if (savedInstanceState == null || !savedInstanceState.containsKey("key")){
+//            callGetApiVga()
+////            supportFragmentManager.beginTransaction()
+////                .replace(R.id.container, DetailVgaFragment.newInstance())
+////                .commitNow()
+//        }else{
+//            listResult = savedInstanceState.getParcelableArrayList("key")
+//            initDataSet(listResult, null)
+//        }
     }
 
     private fun callGetApiVga() {
@@ -44,8 +62,11 @@ class DetailVgaActivity() : AppCompatActivity() {
                 Log.d("DataSet",response.body().toString())
                 if (response.isSuccessful){
                     listResult = response.body()
+
+                    val filterList = listResult!!.filter { vgaModel: VgaModel -> vgaModel.price_adv != 0 } as ArrayList
+
 //                    print(result)
-                    initDataSet(listResult)
+                    initDataSet(filterList, null)
                 }
                 else{
                     Log.e("ErrorBodyVgaCall", response.errorBody().toString())
@@ -58,23 +79,34 @@ class DetailVgaActivity() : AppCompatActivity() {
         })
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-
-        outState.putParcelableArrayList("key", listResult)
-        super.onSaveInstanceState(outState)
-    }
+//    override fun onSaveInstanceState(outState: Bundle) {
+//
+//        outState.putParcelableArrayList("key", listResult)
+//        super.onSaveInstanceState(outState)
+//    }
 
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
-    private fun initDataSet(result: ArrayList<VgaModel>?) {
+    private fun initDataSet(result: ArrayList<VgaModel>?, sortBy : String?) {
 
         // Set CustomAdapter as the adapter for RecyclerView.
         recyclerView.apply {
             layoutManager = GridLayoutManager(this@DetailVgaActivity, SPAN_COUNT)
             recyclerView.adapter = CustomAdapter(result)
+        }
+        recyclerView.adapter?.notifyDataSetChanged()
+    }
+
+    private fun initSortDataSet() {
+
+        val listDataSort = arrayListOf("ราคา:ต่ำสุด -> สูงสุด","ราคา:สูงสุด -> ต่ำสุด")
+        // Set CustomAdapter as the adapter for RecyclerView.
+        recyclerSort.apply {
+            layoutManager = GridLayoutManager(this@DetailVgaActivity, SPAN_COUNT)
+            recyclerSort.adapter = SortByListAdapter(this@DetailVgaActivity, listDataSort)
         }
     }
 
