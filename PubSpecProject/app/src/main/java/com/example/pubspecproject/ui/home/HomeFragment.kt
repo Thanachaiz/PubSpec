@@ -11,7 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.pubspecproject.R
 import android.content.Intent
-import com.example.pubspecproject.DetailVgaActivity
+import com.example.pubspecproject.ui.detailVga.DetailVgaActivity
 
 
 class HomeFragment : Fragment() {
