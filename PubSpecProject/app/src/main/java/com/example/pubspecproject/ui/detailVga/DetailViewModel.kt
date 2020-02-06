@@ -27,7 +27,7 @@ class DetailViewModel: ViewModel(){
                 Log.d("DataSet",response.body().toString())
                 if (response.isSuccessful){
                     val data : ArrayList<VgaModel> = (response.body() as ArrayList<VgaModel>?)!!
-                    listResult?.value = data
+                    listResult.value = data
 //                    print(result)
 //                    initDataSet(listResult)
                 }

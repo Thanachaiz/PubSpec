@@ -12,7 +12,7 @@ import com.example.pubspecproject.R
 import com.example.pubspecproject.model.VgaModel
 
 @SuppressLint("ParcelCreator")
-class DetailVgaActivity() : AppCompatActivity() {
+class DetailVgaActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     lateinit var vgaModel : DetailViewModel

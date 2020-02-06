@@ -39,7 +39,7 @@ class SortByListAdapter (private val onClickSort: onClickListener, private val s
             textSort.text = result
 
             itemView.setOnClickListener {
-                onClickListener.onClickSortBy(result, adapterPosition, "ClickSort", TAG)
+                onClickListener.onClickSortBy(result, adapterPosition, "onClickSort")
             }
         }
     }
