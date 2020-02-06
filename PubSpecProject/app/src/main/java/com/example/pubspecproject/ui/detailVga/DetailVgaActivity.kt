@@ -20,7 +20,7 @@ class DetailVgaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_vga)
-        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView = findViewById(R.id.recycler_view_vga)
 
         vgaModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
         vgaModel.getAllVga()?.observe(this, Observer { vgaModel ->
@@ -30,11 +30,10 @@ class DetailVgaActivity : AppCompatActivity() {
 
     private fun initDataSet(result: ArrayList<VgaModel>?) {
         // Set CustomAdapter as the adapter for RecyclerView.
-        recyclerView.apply {
-            layoutManager = GridLayoutManager(this@DetailVgaActivity,
-                SPAN_COUNT
-            )
-            recyclerView.adapter = CustomAdapter(result)
+        recyclerView.also {
+            it.layoutManager = GridLayoutManager(this@DetailVgaActivity, SPAN_COUNT)
+            it.setHasFixedSize(true)
+            it.adapter = CustomAdapter(result)
         }
     }
 
