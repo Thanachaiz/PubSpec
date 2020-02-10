@@ -34,7 +34,7 @@ class CustomAdapter (private val dataSet: ArrayList<VgaModel>? = null) :
     }
 
     class ViewHolder(val recyclerVgaItemBinding: VgaItemBinding) : RecyclerView.ViewHolder(recyclerVgaItemBinding.root) {
-        val viewRoot = recyclerVgaItemBinding.root
+        private val viewRoot = recyclerVgaItemBinding.root
 
         init {
             // Define click listener for the ViewHolder's View.
