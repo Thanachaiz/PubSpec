@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pubspecproject.CustomAdapter
+import com.example.pubspecproject.adapter.VgaItemAdapter
 import com.example.pubspecproject.R
 import com.example.pubspecproject.model.VgaModel
 
@@ -33,7 +33,7 @@ class DetailVgaActivity : AppCompatActivity() {
         recyclerView.also {
             it.layoutManager = GridLayoutManager(this@DetailVgaActivity, SPAN_COUNT)
             it.setHasFixedSize(true)
-            it.adapter = CustomAdapter(result)
+            it.adapter = VgaItemAdapter(result)
         }
     }
 

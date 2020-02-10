@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.pubspecproject.R
 import android.content.Intent
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pubspecproject.ui.detailVga.DetailVgaActivity
 
 
@@ -22,16 +23,17 @@ class HomeFragment : Fragment() {
 
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        val cardViewVga: CardView = root.findViewById(R.id.cardViewCPU)
+//        val textView: TextView = root.findViewById(R.id.text_home)
+//        val cardViewVga: CardView = root.findViewById(R.id.cardViewCPU)
+        val recyclerBuildItem : RecyclerView = root.findViewById(R.id.recyclerBuildList)
         homeViewModel.text.observe(this, Observer {
-            textView.text = it
+//            textView.text = it
 
-            cardViewVga.setOnClickListener {
-                val intent = Intent(root.context, DetailVgaActivity::class.java)
-                startActivity(intent)
-                activity?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-            }
+//            cardViewVga.setOnClickListener {
+//                val intent = Intent(root.context, DetailVgaActivity::class.java)
+//                startActivity(intent)
+//                activity?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+//            }
         })
         return root
     }

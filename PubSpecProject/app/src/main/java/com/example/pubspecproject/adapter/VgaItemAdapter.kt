@@ -1,19 +1,17 @@
-package com.example.pubspecproject
+package com.example.pubspecproject.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.pubspecproject.R
 import com.example.pubspecproject.databinding.VgaItemBinding
 import com.example.pubspecproject.model.VgaModel
 
-class CustomAdapter (private val dataSet: ArrayList<VgaModel>? = null) :
-    RecyclerView.Adapter<CustomAdapter.ViewHolder>(){
+class VgaItemAdapter (private val dataSet: ArrayList<VgaModel>? = null) :
+    RecyclerView.Adapter<VgaItemAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(
@@ -29,12 +27,12 @@ class CustomAdapter (private val dataSet: ArrayList<VgaModel>? = null) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val result = dataSet?.get(position)
-        holder.recyclerVgaItemBinding.vgaItem = dataSet?.get(position)
+        holder.viewVgaItemBinding.vgaItem = dataSet?.get(position)
         holder.bind(result)
     }
 
-    class ViewHolder(val recyclerVgaItemBinding: VgaItemBinding) : RecyclerView.ViewHolder(recyclerVgaItemBinding.root) {
-        private val viewRoot = recyclerVgaItemBinding.root
+    class ViewHolder(val viewVgaItemBinding: VgaItemBinding) : RecyclerView.ViewHolder(viewVgaItemBinding.root) {
+        private val viewRoot = viewVgaItemBinding.root
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -44,13 +42,13 @@ class CustomAdapter (private val dataSet: ArrayList<VgaModel>? = null) :
         fun bind(result: VgaModel?){
             val defaultUrlImage = "https://www.advice.co.th/pic-pc/vga/"
 
-            Glide.with(recyclerVgaItemBinding.imageVga)
+            Glide.with(viewVgaItemBinding.imageVga)
                 .load(defaultUrlImage + result?.vga_picture)
-                .into(recyclerVgaItemBinding.imageVga)
+                .into(viewVgaItemBinding.imageVga)
         }
     }
 
     companion object {
-        private val TAG = "CustomAdapter"
+        private val TAG = "VgaItemAdapter"
     }
 }
