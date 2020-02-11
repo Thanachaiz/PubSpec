@@ -2,6 +2,7 @@ package com.example.pubspecproject.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -11,7 +12,8 @@ import com.example.pubspecproject.`interface`.onClickBuildListener
 import com.example.pubspecproject.databinding.ListitemViewBinding
 import com.example.pubspecproject.model.ItemListModel
 
-class ItemListAdapter(val onClickBuild: onClickBuildListener) : ListAdapter<ItemListModel, ItemListAdapter.ItemListViewHolder>(DiffCallback()){
+class ItemListAdapter(val onClickBuildListener: onClickBuildListener) :
+    ListAdapter<ItemListModel, ItemListAdapter.ItemListViewHolder>(DiffCallback()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemListViewHolder =
         ItemListViewHolder(
@@ -23,18 +25,17 @@ class ItemListAdapter(val onClickBuild: onClickBuildListener) : ListAdapter<Item
         ))
 
     override fun onBindViewHolder(holder: ItemListViewHolder, position: Int) {
-        val result = getItem(position)
-        holder.bind(result, onClickBuild)
+        holder.viewBindingBuildItem.buildItem = getItem(position)
+        holder.bind(getItem(position) ,onClickBuildListener)
     }
 
-    class ItemListViewHolder(viewBindingBuildItem: ListitemViewBinding) : RecyclerView.ViewHolder(viewBindingBuildItem.root) {
+    class ItemListViewHolder(val viewBindingBuildItem: ListitemViewBinding) : RecyclerView.ViewHolder(viewBindingBuildItem.root) {
 
-        fun bind(
-            result: ItemListModel,
-            onClickBuild: onClickBuildListener
-        ) = with(itemView){
+        fun bind(result: ItemListModel,onClickBuild: onClickBuildListener)= with(itemView){
 
-
+            itemView.setOnClickListener {
+                onClickBuild.onClickBuildItem(result, adapterPosition, "ClickSelect")
+            }
         }
     }
 
