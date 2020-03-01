@@ -8,15 +8,16 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import androidx.lifecycle.ViewModel
+import com.example.pubspecproject.`interface`.onClickVgaItem
 import com.example.pubspecproject.api.Vga_Req.getVga.vgaReq_Api
 
 
 class DetailViewModel: ViewModel(){
 
-    private var listResult = MutableLiveData<ArrayList<VgaModel>>().apply {
-        this.also {
-            callGetApiVga()
-        }
+    private var _listResult = MutableLiveData<ArrayList<VgaModel>>()
+
+    init {
+        callGetApiVga()
     }
 
     private fun callGetApiVga() {
@@ -26,8 +27,8 @@ class DetailViewModel: ViewModel(){
             override fun onResponse(call: Call<ArrayList<VgaModel>>, response: Response<ArrayList<VgaModel>>) {
                 Log.d("DataSet",response.body().toString())
                 if (response.isSuccessful){
-                    val data : ArrayList<VgaModel> = (response.body() as ArrayList<VgaModel>?)!!
-                    listResult.value = data
+                    val data : ArrayList<VgaModel> = (response.body() as ArrayList<VgaModel>)
+                    _listResult.value = data
 //                    print(result)
 //                    initDataSet(listResult)
                 }
@@ -43,9 +44,9 @@ class DetailViewModel: ViewModel(){
     }
 
     fun getAllVga(): LiveData<ArrayList<VgaModel>>? {
-        if (listResult == null){
-            listResult = MutableLiveData()
+        if (_listResult == null){
+            _listResult = MutableLiveData()
         }
-        return listResult
+        return _listResult
     }
 }

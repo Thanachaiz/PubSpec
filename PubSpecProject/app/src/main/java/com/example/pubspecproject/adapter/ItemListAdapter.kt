@@ -2,17 +2,18 @@ package com.example.pubspecproject.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pubspecproject.R
-import com.example.pubspecproject.`interface`.onClickBuildListener
+import com.example.pubspecproject.`interface`.onClickBuildItem
 import com.example.pubspecproject.databinding.ListitemViewBinding
 import com.example.pubspecproject.model.ItemListModel
 
-class ItemListAdapter(val onClickBuildListener: onClickBuildListener) :
+class ItemListAdapter(
+    val clickBuildItem: onClickBuildItem
+) :
     ListAdapter<ItemListModel, ItemListAdapter.ItemListViewHolder>(DiffCallback()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemListViewHolder =
@@ -26,15 +27,18 @@ class ItemListAdapter(val onClickBuildListener: onClickBuildListener) :
 
     override fun onBindViewHolder(holder: ItemListViewHolder, position: Int) {
         holder.viewBindingBuildItem.buildItem = getItem(position)
-        holder.bind(getItem(position) ,onClickBuildListener)
+        holder.bind(getItem(position), clickBuildItem)
     }
 
     class ItemListViewHolder(val viewBindingBuildItem: ListitemViewBinding) : RecyclerView.ViewHolder(viewBindingBuildItem.root) {
 
-        fun bind(result: ItemListModel,onClickBuild: onClickBuildListener)= with(itemView){
+        fun bind(
+            result: ItemListModel,
+            clickBuildItem: onClickBuildItem
+        )= with(itemView){
 
             itemView.setOnClickListener {
-                onClickBuild.onClickBuildItem(result, adapterPosition, "ClickSelect")
+                clickBuildItem.clickBuildListener()
             }
         }
     }
