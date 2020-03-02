@@ -8,16 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.pubspecproject.R
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.pubspecproject.`interface`.onClickBuildItem
-import com.example.pubspecproject.adapter.ItemListAdapter
+import com.example.pubspecproject.model.ItemBuildModel
 import com.example.pubspecproject.ui.detailVga.DetailVgaActivity
 import kotlinx.android.synthetic.main.fragment_home.*
+import java.util.*
 
 
 class HomeFragment : Fragment() {
@@ -26,6 +24,7 @@ class HomeFragment : Fragment() {
 //    private var itemAdapter = ItemListAdapter()
     private lateinit var root : View
     private lateinit var recyclerBuildItem : RecyclerView
+    private var listDetail = mutableListOf<ItemBuildModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         root = inflater.inflate(R.layout.fragment_home, container, false)
@@ -60,9 +59,20 @@ class HomeFragment : Fragment() {
                 Glide.with(context!!)
                     .load(imageVga)
                     .into(image_vga_build)
+
+                listDetail.add(ItemBuildModel(nameVga, imageVga, priceVga))
             }
             if (resultCode == RESULT_CANCELED){
                 //NOTHING
+            }
+        }
+    }
+
+    private fun totalPrice(){
+        if (listDetail.isNullOrEmpty()){
+            listDetail.forEach {data: ItemBuildModel ->
+
+                total_price.text = data.priceVga.toString()
             }
         }
     }
