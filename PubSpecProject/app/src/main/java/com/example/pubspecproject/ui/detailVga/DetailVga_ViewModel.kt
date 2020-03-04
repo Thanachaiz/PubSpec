@@ -12,7 +12,7 @@ import com.example.pubspecproject.`interface`.onClickVgaItem
 import com.example.pubspecproject.api.Vga_Req.getVga.vgaReq_Api
 
 
-class DetailViewModel: ViewModel(){
+class DetailVga_ViewModel: ViewModel(){
 
     private var _listResult = MutableLiveData<ArrayList<VgaModel>>()
 
@@ -25,12 +25,13 @@ class DetailViewModel: ViewModel(){
         vgaReq_Api.groupListVga().enqueue(object : Callback<ArrayList<VgaModel>> {
 
             override fun onResponse(call: Call<ArrayList<VgaModel>>, response: Response<ArrayList<VgaModel>>) {
-                Log.d("DataSet",response.body().toString())
+                val listData = response.body()
                 if (response.isSuccessful){
-                    val data : ArrayList<VgaModel> = (response.body() as ArrayList<VgaModel>)
+                    val filterData = listData?.filter { vgaModel ->
+                        !vgaModel.adv_id.isNullOrEmpty() && vgaModel.vga_price_adv != 0
+                    }
+                    val data : ArrayList<VgaModel> = (filterData as ArrayList<VgaModel>)
                     _listResult.value = data
-//                    print(result)
-//                    initDataSet(listResult)
                 }
                 else{
                     Log.e("ErrorBodyVgaCall", response.errorBody().toString())

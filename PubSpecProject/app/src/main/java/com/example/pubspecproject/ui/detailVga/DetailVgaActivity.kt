@@ -18,14 +18,14 @@ import com.example.pubspecproject.model.VgaModel
 class DetailVgaActivity : AppCompatActivity(), onClickVgaItem {
 
     private lateinit var recyclerView: RecyclerView
-    lateinit var vgaModel : DetailViewModel
+    lateinit var vgaModel : DetailVga_ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_vga)
         recyclerView = findViewById(R.id.recycler_view_vga)
 
-        vgaModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
+        vgaModel = ViewModelProviders.of(this).get(DetailVga_ViewModel::class.java)
         vgaModel.getAllVga()?.observe(this, Observer { vgaModel ->
             initDataSet(vgaModel)
         })

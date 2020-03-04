@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +13,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.pubspecproject.R
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.pubspecproject.model.ItemBuildModel
+import com.example.pubspecproject.ui.detailCpu.DetailCpuActivity
 import com.example.pubspecproject.ui.detailVga.DetailVgaActivity
 import kotlinx.android.synthetic.main.fragment_home.*
-import java.util.*
 
 
 class HomeFragment : Fragment() {
@@ -24,7 +24,7 @@ class HomeFragment : Fragment() {
 //    private var itemAdapter = ItemListAdapter()
     private lateinit var root : View
     private lateinit var recyclerBuildItem : RecyclerView
-    private var listDetail = mutableListOf<ItemBuildModel>()
+    private var listPrice = HashMap<String, Int>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         root = inflater.inflate(R.layout.fragment_home, container, false)
@@ -36,12 +36,22 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         homeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
 
+        cardViewCpu.setOnClickListener {
+            val intent = Intent(context, DetailCpuActivity::class.java)
+            intent.putExtra("Cpu Name", "CpuDetail")
+            startActivityIntent(intent, 1)
+        }
+
         cardViewVga.setOnClickListener {
             val intent = Intent(context, DetailVgaActivity::class.java)
             intent.putExtra("Vga Name", "VgaDetail")
-            startActivityForResult(intent, 1)
-            activity?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            startActivityIntent(intent, 2)
         }
+    }
+
+    private fun startActivityIntent(intent : Intent, requestCode: Int){
+        startActivityForResult(intent, requestCode)
+        activity?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -49,9 +59,31 @@ class HomeFragment : Fragment() {
         if (requestCode == 1){
 
             if (resultCode == RESULT_OK){
+                val nameCpu = data?.getStringExtra("name_cpu")
+                val imageCpu = data?.getStringExtra("image_cpu")
+                val priceCpu = data!!.getIntExtra("price_cpu", 0)
+
+                text_name_cpu.text = nameCpu
+                text_price_cpu.text = priceCpu.toString()
+
+                Glide.with(context!!)
+                    .load(imageCpu)
+                    .into(image_cpu_build)
+
+
+                listPrice["priceCpu"] = priceCpu
+
+            }
+            if (resultCode == RESULT_CANCELED){
+                //NOTHING
+            }
+        }
+        if (requestCode == 2){
+
+            if (resultCode == RESULT_OK){
                 val nameVga = data?.getStringExtra("name_vga")
                 val imageVga = data?.getStringExtra("image_vga")
-                val priceVga = data?.getIntExtra("price_vga", 0)
+                val priceVga = data!!.getIntExtra("price_vga", 0)
 
                 text_name_vga.text = nameVga
                 text_price_vga.text = priceVga.toString()
@@ -60,20 +92,30 @@ class HomeFragment : Fragment() {
                     .load(imageVga)
                     .into(image_vga_build)
 
-                listDetail.add(ItemBuildModel(nameVga, imageVga, priceVga))
+                listPrice["priceVga"] = priceVga
             }
             if (resultCode == RESULT_CANCELED){
                 //NOTHING
             }
         }
+
+        totalPrice(listPrice)
     }
 
-    private fun totalPrice(){
-        if (listDetail.isNullOrEmpty()){
-            listDetail.forEach {data: ItemBuildModel ->
+    private fun totalPrice(priceItem: HashMap<String, Int>){
+        var pCpu = 0
+        var pVga = 0
 
-                total_price.text = data.priceVga.toString()
-            }
+        if (priceItem["priceCpu"] != null){
+            pCpu = priceItem["priceCpu"]!!
         }
+        if (priceItem["priceVga"] != null){
+            pVga = priceItem["priceVga"]!!
+        }
+
+        val totalPrice = pCpu + pVga
+
+        total_price.text = totalPrice.toString()
+
     }
 }

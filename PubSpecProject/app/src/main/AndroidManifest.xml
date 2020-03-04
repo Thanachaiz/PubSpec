@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.detailVga.DetailVgaActivity"></activity>
+        <activity android:name=".ui.detailCpu.DetailCpuActivity"></activity>
+        <activity android:name=".ui.detailVga.DetailVgaActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
