@@ -53,6 +53,9 @@ class VgaItemAdapter (
             viewVgaItemBinding.btnAdd.setOnClickListener {
                 onClickVgaItem.VgaAddItemClick(result, imageItem, adapterPosition)
             }
+            viewVgaItemBinding.btnDetail.setOnClickListener {
+                onClickVgaItem.VgaDetailItemClick(result,imageItem, adapterPosition)
+            }
         }
     }
 

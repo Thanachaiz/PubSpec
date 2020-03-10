@@ -5,20 +5,31 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.pubspecproject.adapter.VgaItemAdapter
 import com.example.pubspecproject.R
 import com.example.pubspecproject.`interface`.onClickVgaItem
 import com.example.pubspecproject.model.VgaModel
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.detail_bottomsheet.*
+import java.text.DecimalFormat
 
 @SuppressLint("ParcelCreator")
 class DetailVgaActivity : AppCompatActivity(), onClickVgaItem {
 
+    private lateinit var bottomSheetView: View
     private lateinit var recyclerView: RecyclerView
-    lateinit var vgaModel : DetailVga_ViewModel
+    private lateinit var vgaModel : DetailVga_ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +67,55 @@ class DetailVgaActivity : AppCompatActivity(), onClickVgaItem {
         finish()
     }
 
-    override fun VgaDetailItemClick(resultVga: VgaModel?, position: Int) {
+    override fun VgaDetailItemClick(resultVga: VgaModel?,imageItem: String, position: Int) {
 
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val formatter = DecimalFormat("#,###,###")
+        bottomSheetView = layoutInflater.inflate(R.layout.detail_bottomsheet, null)
+
+        if (resultVga != null){
+
+            val imageView: ImageView = bottomSheetView.findViewById(R.id.image_vga)
+            val convertFormat = formatter.format(resultVga.vga_price_adv)
+
+            Glide.with(bottomSheetView)
+                .load(imageItem)
+                .into(imageView)
+
+            bottomSheetView.findViewById<TextView>(R.id.text_brand_model).text = "${resultVga.vga_brand} ${resultVga.vga_model}"
+            bottomSheetView.findViewById<TextView>(R.id.text_price_vga).text = convertFormat
+            bottomSheetView.findViewById<TextView>(R.id.text_brand).text = resultVga.vga_brand
+            bottomSheetView.findViewById<TextView>(R.id.text_model).text = resultVga.vga_model
+        }
+//        val bottomSheetBehavior = BottomSheetBehavior.from<View>(bottomSheetView)
+//        bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
+//            override fun onSlide(p0: View, p1: Float) {
+//
+//            }
+//
+//            override fun onStateChanged(p0: View, newState: Int) {
+//                when (newState) {
+//                    BottomSheetBehavior.STATE_COLLAPSED -> {
+//                        //"Slide Up"
+//                    }
+//                    BottomSheetBehavior.STATE_HIDDEN -> {
+//
+//                    }
+//                    BottomSheetBehavior.STATE_EXPANDED -> {
+//                        //"Slide Down"
+//                    }
+//                    BottomSheetBehavior.STATE_DRAGGING -> {
+//
+//                    }
+//                    BottomSheetBehavior.STATE_SETTLING -> {
+//
+//                    }
+//                }
+//            }
+//        })
+//        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheetDialog.setContentView(bottomSheetView)
+        bottomSheetDialog.show()
     }
 
     override fun finish() {
