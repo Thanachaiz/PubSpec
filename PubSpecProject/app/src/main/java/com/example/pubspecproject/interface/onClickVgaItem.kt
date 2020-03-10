@@ -9,5 +9,5 @@ interface onClickVgaItem{
 }
 interface onClickCpuItem{
     fun CpuAddItemClick(resultCpu : CpuModel?, imageItem : String, position: Int)
-    fun CpuDetailItemClick(resultCpu : CpuModel?, position: Int)
+    fun CpuDetailItemClick(resultCpu : CpuModel?,imageItem : String, position: Int)
 }

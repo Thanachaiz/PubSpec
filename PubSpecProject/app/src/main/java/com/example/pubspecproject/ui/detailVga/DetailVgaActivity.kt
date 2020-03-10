@@ -87,33 +87,6 @@ class DetailVgaActivity : AppCompatActivity(), onClickVgaItem {
             bottomSheetView.findViewById<TextView>(R.id.text_brand).text = resultVga.vga_brand
             bottomSheetView.findViewById<TextView>(R.id.text_model).text = resultVga.vga_model
         }
-//        val bottomSheetBehavior = BottomSheetBehavior.from<View>(bottomSheetView)
-//        bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback(){
-//            override fun onSlide(p0: View, p1: Float) {
-//
-//            }
-//
-//            override fun onStateChanged(p0: View, newState: Int) {
-//                when (newState) {
-//                    BottomSheetBehavior.STATE_COLLAPSED -> {
-//                        //"Slide Up"
-//                    }
-//                    BottomSheetBehavior.STATE_HIDDEN -> {
-//
-//                    }
-//                    BottomSheetBehavior.STATE_EXPANDED -> {
-//                        //"Slide Down"
-//                    }
-//                    BottomSheetBehavior.STATE_DRAGGING -> {
-//
-//                    }
-//                    BottomSheetBehavior.STATE_SETTLING -> {
-//
-//                    }
-//                }
-//            }
-//        })
-//        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetDialog.setContentView(bottomSheetView)
         bottomSheetDialog.show()
     }

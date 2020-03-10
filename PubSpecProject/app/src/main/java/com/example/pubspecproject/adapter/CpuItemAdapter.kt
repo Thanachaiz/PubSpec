@@ -56,6 +56,9 @@ class CpuItemAdapter (
             viewCpuItemBinding.btnAdd.setOnClickListener {
                 onClickCpuItem.CpuAddItemClick(result, imageItem, adapterPosition)
             }
+            viewCpuItemBinding.btnDetail.setOnClickListener {
+                onClickCpuItem.CpuDetailItemClick(result, imageItem, adapterPosition)
+            }
         }
     }
 
