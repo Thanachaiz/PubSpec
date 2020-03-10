@@ -3,6 +3,7 @@ package com.example.pubspecproject.ui.detailVga
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.example.pubspecproject.model.VgaModel
 import retrofit2.Call
 import retrofit2.Callback
@@ -50,4 +51,12 @@ class DetailVga_ViewModel: ViewModel(){
         }
         return _listResult
     }
+
+//    fun getFilteredList(strEditText: String): LiveData<ArrayList<VgaModel>> {
+//        return Transformations.switchMap(userListLiveData) {
+//            it.filter {
+//                it.name.contains(strEditText)
+//            }
+//        }
+//    }
 }
